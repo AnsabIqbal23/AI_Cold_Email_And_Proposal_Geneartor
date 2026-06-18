@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme {
+  /* Neutral warm base — avoids default Tailwind blue entirely */
+  --color-background: #fafaf9;
+  --color-surface: #ffffff;
+  --color-border: #e7e5e4;
+
+  --color-text-primary: #1c1917;
+  --color-text-secondary: #78716c;
+  --color-text-inverse: #fafaf9;
+
+  /* Header */
+  --color-header-bg: #1c1917;
+
+  /* Teal accent — deliberate, not a default preset */
+  --color-accent: #0d9488;
+  --color-accent-hover: #0f766e;
+  --color-accent-foreground: #ffffff;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
