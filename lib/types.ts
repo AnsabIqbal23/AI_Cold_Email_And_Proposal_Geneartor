@@ -48,3 +48,16 @@ export interface CompletionOptions {
   userPrompt: string;
   stream?: boolean;
 }
+
+export type EmailStreamStatus = "idle" | "streaming" | "retrying" | "done" | "error";
+
+export interface EmailStreamState {
+  status: EmailStreamStatus;
+  text: string;
+  error?: string;
+}
+
+export interface ParsedEmail {
+  subject: string;
+  body: string;
+}

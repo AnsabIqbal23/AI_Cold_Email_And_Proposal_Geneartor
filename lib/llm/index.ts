@@ -36,6 +36,27 @@ export async function generateCompletion(
   }
 }
 
+// Streams from the primary provider, falling back on any LLM error and calling
+// onRetrying so the caller can signal the retry to the user before it starts.
+export async function generateStreamWithFallback(
+  options: Pick<CompletionOptions, "systemPrompt" | "userPrompt">,
+  onRetrying: () => void
+): Promise<ReadableStream<Uint8Array>> {
+  const primary = getPrimaryConfig();
+  const fallback = getFallbackConfig();
+  const { systemPrompt, userPrompt } = options;
+
+  try {
+    return await callProvider(primary, { systemPrompt, userPrompt, stream: true });
+  } catch (err) {
+    if (err instanceof LLMError && fallback) {
+      onRetrying();
+      return await callProvider(fallback, { systemPrompt, userPrompt, stream: true });
+    }
+    throw err;
+  }
+}
+
 // Calls the fallback provider directly — used only by the test harness.
 export async function generateCompletionFromFallback(
   options: Omit<CompletionOptions, "stream">

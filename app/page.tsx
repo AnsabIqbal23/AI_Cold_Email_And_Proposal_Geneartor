@@ -1,16 +1,18 @@
+import { GeneratorForm } from "@/components/GeneratorForm";
+
 export default function HomePage() {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-8">
       <div>
         <h1
-          style={{ color: "var(--color-text-primary)" }}
           className="text-3xl font-bold tracking-tight"
+          style={{ color: "var(--color-text-primary)" }}
         >
           Generate your outreach
         </h1>
         <p
-          style={{ color: "var(--color-text-secondary)" }}
           className="mt-2 text-base"
+          style={{ color: "var(--color-text-secondary)" }}
         >
           Enter a few details about your prospect and we will write a tailored
           cold email or proposal. No em-dashes, no fluff, no stiff openers.
@@ -18,15 +20,13 @@ export default function HomePage() {
       </div>
 
       <div
+        className="rounded-xl border p-6 sm:p-8"
         style={{
           backgroundColor: "var(--color-surface)",
           borderColor: "var(--color-border)",
         }}
-        className="rounded-xl border p-8 text-center"
       >
-        <p style={{ color: "var(--color-text-secondary)" }} className="text-sm">
-          Generator form coming in the next phase.
-        </p>
+        <GeneratorForm />
       </div>
     </div>
   );
