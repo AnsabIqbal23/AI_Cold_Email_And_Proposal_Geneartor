@@ -1,0 +1,145 @@
+const FEATURES = [
+  {
+    title: "Proven frameworks, not generic prompts",
+    description:
+      "Choose from AIDA, PAS, BAB, and other tested copywriting structures. Each one shapes your message to move the reader toward a response.",
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        className="w-5 h-5"
+        aria-hidden
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z"
+        />
+      </svg>
+    ),
+  },
+  {
+    title: "Sounds like a person, not a robot",
+    description:
+      "Output is tuned to avoid stiff AI language and filler phrases. Your prospects read it and think a thoughtful person wrote it.",
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        className="w-5 h-5"
+        aria-hidden
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"
+        />
+      </svg>
+    ),
+  },
+  {
+    title: "Proposals with one-click PDF export",
+    description:
+      "Go from a structured proposal to a formatted PDF document in one click. Ready to attach and send, no extra tools needed.",
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        className="w-5 h-5"
+        aria-hidden
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+        />
+      </svg>
+    ),
+  },
+  {
+    title: "Works with any AI provider",
+    description:
+      "Powered by Google Gemini Flash with Groq as a fallback. All calls happen server-side and nothing is stored. Free to use.",
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        className="w-5 h-5"
+        aria-hidden
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"
+        />
+      </svg>
+    ),
+  },
+];
+
+export default function Features() {
+  return (
+    <section className="py-20 lg:py-28 bg-white">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="text-center mb-16">
+          <h2
+            className="text-3xl lg:text-4xl font-bold tracking-tight mb-4"
+            style={{ color: "var(--color-text-primary)" }}
+          >
+            Everything you need to write better outreach.
+          </h2>
+          <p
+            className="text-base max-w-md mx-auto"
+            style={{ color: "var(--color-text-secondary)" }}
+          >
+            Designed for speed and quality. Not another generic AI writing
+            tool.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {FEATURES.map((feature) => (
+            <div
+              key={feature.title}
+              className="landing-feature-card rounded-2xl border p-6"
+              style={{
+                borderColor: "var(--color-border)",
+                backgroundColor: "var(--color-surface)",
+              }}
+            >
+              <div
+                className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg"
+                style={{
+                  backgroundColor: "rgba(13,148,136,0.1)",
+                  color: "var(--color-accent)",
+                }}
+              >
+                {feature.icon}
+              </div>
+              <h3
+                className="text-base font-semibold mb-2"
+                style={{ color: "var(--color-text-primary)" }}
+              >
+                {feature.title}
+              </h3>
+              <p
+                className="text-sm leading-relaxed"
+                style={{ color: "var(--color-text-secondary)" }}
+              >
+                {feature.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
