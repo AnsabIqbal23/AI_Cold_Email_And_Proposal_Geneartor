@@ -1,3 +1,5 @@
+import AnimateIn from "@/components/landing/AnimateIn";
+
 const TESTIMONIALS = [
   {
     quote:
@@ -42,9 +44,9 @@ export default function SocialProof() {
   return (
     <section className="bg-white py-20 lg:py-28">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="mb-16 text-center">
+        <AnimateIn className="mb-16 text-center">
           <h2
-            className="text-3xl font-bold tracking-tight lg:text-4xl mb-3"
+            className="mb-3 text-3xl font-bold tracking-tight lg:text-4xl"
             style={{ color: "var(--color-text-primary)" }}
           >
             What people are saying.
@@ -53,40 +55,41 @@ export default function SocialProof() {
             Early users, real feedback. Placeholder names until we collect
             signed reviews.
           </p>
-        </div>
+        </AnimateIn>
 
         <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-          {TESTIMONIALS.map((t) => (
-            <div
-              key={t.name}
-              className="flex flex-col gap-4 rounded-2xl border p-6"
-              style={{
-                borderColor: "var(--color-border)",
-                backgroundColor: "var(--color-surface)",
-              }}
-            >
-              <StarRating />
-              <p
-                className="flex-1 text-sm leading-relaxed"
-                style={{ color: "var(--color-text-primary)" }}
+          {TESTIMONIALS.map((t, i) => (
+            <AnimateIn key={t.name} delay={i * 90}>
+              <div
+                className="flex h-full flex-col gap-4 rounded-2xl border p-6"
+                style={{
+                  borderColor: "var(--color-border)",
+                  backgroundColor: "var(--color-surface)",
+                }}
               >
-                &ldquo;{t.quote}&rdquo;
-              </p>
-              <div>
-                <div
-                  className="text-sm font-semibold"
+                <StarRating />
+                <p
+                  className="flex-1 text-sm leading-relaxed"
                   style={{ color: "var(--color-text-primary)" }}
                 >
-                  {t.name}
-                </div>
-                <div
-                  className="text-xs"
-                  style={{ color: "var(--color-text-secondary)" }}
-                >
-                  {t.role}
+                  &ldquo;{t.quote}&rdquo;
+                </p>
+                <div>
+                  <div
+                    className="text-sm font-semibold"
+                    style={{ color: "var(--color-text-primary)" }}
+                  >
+                    {t.name}
+                  </div>
+                  <div
+                    className="text-xs"
+                    style={{ color: "var(--color-text-secondary)" }}
+                  >
+                    {t.role}
+                  </div>
                 </div>
               </div>
-            </div>
+            </AnimateIn>
           ))}
         </div>
       </div>

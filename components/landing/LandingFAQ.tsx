@@ -1,3 +1,5 @@
+import AnimateIn from "@/components/landing/AnimateIn";
+
 const FAQS = [
   {
     q: "Is it free to use?",
@@ -25,34 +27,38 @@ export default function LandingFAQ() {
   return (
     <section
       className="py-20 lg:py-28"
-      style={{ backgroundColor: "var(--color-background)" }}
     >
       <div className="mx-auto max-w-2xl px-6">
-        <div className="mb-14 text-center">
+        <AnimateIn className="mb-14 text-center">
           <h2
             className="text-3xl font-bold tracking-tight lg:text-4xl"
             style={{ color: "var(--color-text-primary)" }}
           >
             Common questions.
           </h2>
-        </div>
+        </AnimateIn>
 
-        <div className="divide-y" style={{ borderColor: "var(--color-border)" }}>
-          {FAQS.map((faq) => (
-            <div key={faq.q} className="py-6">
-              <h3
-                className="mb-2 text-sm font-semibold"
-                style={{ color: "var(--color-text-primary)" }}
-              >
-                {faq.q}
-              </h3>
-              <p
-                className="text-sm leading-relaxed"
-                style={{ color: "var(--color-text-secondary)" }}
-              >
-                {faq.a}
-              </p>
-            </div>
+        <div
+          className="divide-y"
+          style={{ borderColor: "var(--color-border)" }}
+        >
+          {FAQS.map((faq, i) => (
+            <AnimateIn key={faq.q} delay={i * 60}>
+              <div className="py-6">
+                <h3
+                  className="mb-2 text-sm font-semibold"
+                  style={{ color: "var(--color-text-primary)" }}
+                >
+                  {faq.q}
+                </h3>
+                <p
+                  className="text-sm leading-relaxed"
+                  style={{ color: "var(--color-text-secondary)" }}
+                >
+                  {faq.a}
+                </p>
+              </div>
+            </AnimateIn>
           ))}
         </div>
       </div>

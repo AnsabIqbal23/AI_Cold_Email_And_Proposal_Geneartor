@@ -1,3 +1,5 @@
+import AnimateIn from "@/components/landing/AnimateIn";
+
 const FEATURES = [
   {
     title: "Proven frameworks, not generic prompts",
@@ -9,7 +11,7 @@ const FEATURES = [
         fill="none"
         stroke="currentColor"
         strokeWidth="1.5"
-        className="w-5 h-5"
+        className="h-5 w-5"
         aria-hidden
       >
         <path
@@ -30,7 +32,7 @@ const FEATURES = [
         fill="none"
         stroke="currentColor"
         strokeWidth="1.5"
-        className="w-5 h-5"
+        className="h-5 w-5"
         aria-hidden
       >
         <path
@@ -51,7 +53,7 @@ const FEATURES = [
         fill="none"
         stroke="currentColor"
         strokeWidth="1.5"
-        className="w-5 h-5"
+        className="h-5 w-5"
         aria-hidden
       >
         <path
@@ -72,7 +74,7 @@ const FEATURES = [
         fill="none"
         stroke="currentColor"
         strokeWidth="1.5"
-        className="w-5 h-5"
+        className="h-5 w-5"
         aria-hidden
       >
         <path
@@ -87,56 +89,57 @@ const FEATURES = [
 
 export default function Features() {
   return (
-    <section className="py-20 lg:py-28 bg-white">
+    <section className="bg-white py-20 lg:py-28">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="text-center mb-16">
+        <AnimateIn className="mb-16 text-center">
           <h2
-            className="text-3xl lg:text-4xl font-bold tracking-tight mb-4"
+            className="mb-4 text-3xl font-bold tracking-tight lg:text-4xl"
             style={{ color: "var(--color-text-primary)" }}
           >
             Everything you need to write better outreach.
           </h2>
           <p
-            className="text-base max-w-md mx-auto"
+            className="mx-auto max-w-md text-base"
             style={{ color: "var(--color-text-secondary)" }}
           >
             Designed for speed and quality. Not another generic AI writing
             tool.
           </p>
-        </div>
+        </AnimateIn>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {FEATURES.map((feature) => (
-            <div
-              key={feature.title}
-              className="landing-feature-card rounded-2xl border p-6"
-              style={{
-                borderColor: "var(--color-border)",
-                backgroundColor: "var(--color-surface)",
-              }}
-            >
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          {FEATURES.map((feature, i) => (
+            <AnimateIn key={feature.title} delay={i * 75}>
               <div
-                className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg"
+                className="landing-feature-card h-full rounded-2xl border p-6"
                 style={{
-                  backgroundColor: "rgba(13,148,136,0.1)",
-                  color: "var(--color-accent)",
+                  borderColor: "var(--color-border)",
+                  backgroundColor: "var(--color-surface)",
                 }}
               >
-                {feature.icon}
+                <div
+                  className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg"
+                  style={{
+                    backgroundColor: "rgba(13,148,136,0.1)",
+                    color: "var(--color-accent)",
+                  }}
+                >
+                  {feature.icon}
+                </div>
+                <h3
+                  className="mb-2 text-base font-semibold"
+                  style={{ color: "var(--color-text-primary)" }}
+                >
+                  {feature.title}
+                </h3>
+                <p
+                  className="text-sm leading-relaxed"
+                  style={{ color: "var(--color-text-secondary)" }}
+                >
+                  {feature.description}
+                </p>
               </div>
-              <h3
-                className="text-base font-semibold mb-2"
-                style={{ color: "var(--color-text-primary)" }}
-              >
-                {feature.title}
-              </h3>
-              <p
-                className="text-sm leading-relaxed"
-                style={{ color: "var(--color-text-secondary)" }}
-              >
-                {feature.description}
-              </p>
-            </div>
+            </AnimateIn>
           ))}
         </div>
       </div>

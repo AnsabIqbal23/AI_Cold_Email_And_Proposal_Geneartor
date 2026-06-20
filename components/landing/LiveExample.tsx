@@ -1,3 +1,5 @@
+import AnimateIn from "@/components/landing/AnimateIn";
+
 const SAMPLE = {
   from: "Alex Chen",
   to: "Sarah Williams, Maple & Co",
@@ -20,26 +22,25 @@ export default function LiveExample() {
   return (
     <section
       className="py-20 lg:py-28"
-      style={{ backgroundColor: "var(--color-background)" }}
     >
       <div className="mx-auto max-w-6xl px-6">
-        <div className="text-center mb-16">
+        <AnimateIn className="mb-16 text-center">
           <h2
-            className="text-3xl lg:text-4xl font-bold tracking-tight mb-4"
+            className="mb-4 text-3xl font-bold tracking-tight lg:text-4xl"
             style={{ color: "var(--color-text-primary)" }}
           >
             See what it actually produces.
           </h2>
           <p
-            className="text-base max-w-md mx-auto"
+            className="mx-auto max-w-md text-base"
             style={{ color: "var(--color-text-secondary)" }}
           >
             A real example from a freelance designer reaching out to a SaaS
             company. Nothing was edited after generation.
           </p>
-        </div>
+        </AnimateIn>
 
-        <div className="mx-auto max-w-2xl">
+        <AnimateIn animation="scaleUp" className="mx-auto max-w-2xl">
           <div
             className="overflow-hidden rounded-2xl border shadow-sm"
             style={{ borderColor: "var(--color-border)" }}
@@ -69,42 +70,26 @@ export default function LiveExample() {
                 borderColor: "var(--color-border)",
               }}
             >
-              <div className="flex gap-3">
-                <span
-                  className="w-14 shrink-0 text-right"
-                  style={{ color: "var(--color-text-secondary)" }}
-                >
-                  From
-                </span>
-                <span style={{ color: "var(--color-text-primary)" }}>
-                  {SAMPLE.from}
-                </span>
-              </div>
-              <div className="flex gap-3">
-                <span
-                  className="w-14 shrink-0 text-right"
-                  style={{ color: "var(--color-text-secondary)" }}
-                >
-                  To
-                </span>
-                <span style={{ color: "var(--color-text-primary)" }}>
-                  {SAMPLE.to}
-                </span>
-              </div>
-              <div className="flex gap-3">
-                <span
-                  className="w-14 shrink-0 text-right"
-                  style={{ color: "var(--color-text-secondary)" }}
-                >
-                  Subject
-                </span>
-                <span
-                  className="font-medium"
-                  style={{ color: "var(--color-text-primary)" }}
-                >
-                  {SAMPLE.subject}
-                </span>
-              </div>
+              {[
+                ["From", SAMPLE.from],
+                ["To", SAMPLE.to],
+                ["Subject", SAMPLE.subject],
+              ].map(([label, value]) => (
+                <div key={label} className="flex gap-3">
+                  <span
+                    className="w-14 shrink-0 text-right"
+                    style={{ color: "var(--color-text-secondary)" }}
+                  >
+                    {label}
+                  </span>
+                  <span
+                    className={label === "Subject" ? "font-medium" : ""}
+                    style={{ color: "var(--color-text-primary)" }}
+                  >
+                    {value}
+                  </span>
+                </div>
+              ))}
             </div>
 
             <div
@@ -134,7 +119,7 @@ export default function LiveExample() {
               Generated with {SAMPLE.framework} in {SAMPLE.time}
             </div>
           </div>
-        </div>
+        </AnimateIn>
       </div>
     </section>
   );
