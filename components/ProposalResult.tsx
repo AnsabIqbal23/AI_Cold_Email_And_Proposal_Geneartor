@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, Fragment } from "react";
+import dynamic from "next/dynamic";
 import { parseProposalResponse } from "@/lib/prompt-engine";
 import {
   SECTION_KEYS,
@@ -8,6 +9,12 @@ import {
   formatProposalAsText,
 } from "@/lib/proposal-formatter";
 import type { EmailStreamState, ProposalContent } from "@/lib/types";
+
+const DownloadProposalPdf = dynamic(
+  () =>
+    import("./DownloadProposalPdf").then((m) => m.DownloadProposalPdf),
+  { ssr: false, loading: () => null }
+);
 
 const EMPTY_SECTIONS: ProposalContent = {
   intro: "",
@@ -22,9 +29,10 @@ const EMPTY_SECTIONS: ProposalContent = {
 interface Props {
   state: EmailStreamState;
   onRegenerate: () => void;
+  targetCompany: string;
 }
 
-export function ProposalResult({ state, onRegenerate }: Props) {
+export function ProposalResult({ state, onRegenerate, targetCompany }: Props) {
   const [sections, setSections] = useState<ProposalContent>(EMPTY_SECTIONS);
   const [parseError, setParseError] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -91,7 +99,7 @@ export function ProposalResult({ state, onRegenerate }: Props) {
         className="flex items-center justify-between px-5 py-3.5 border-b flex-wrap gap-3"
         style={{ borderColor: "var(--color-border)" }}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col gap-0.5">
           <span
             className="text-xs font-semibold uppercase tracking-wider"
             style={{ color: "var(--color-text-secondary)" }}
@@ -106,6 +114,10 @@ export function ProposalResult({ state, onRegenerate }: Props) {
         </div>
 
         <div className="flex items-center gap-2">
+          {canCopy && (
+            <DownloadProposalPdf sections={sections} targetCompany={targetCompany} />
+          )}
+
           <button
             onClick={handleCopy}
             disabled={!canCopy}

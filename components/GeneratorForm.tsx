@@ -177,7 +177,11 @@ export function GeneratorForm() {
         <EmailResult state={emailState} onRegenerate={runEmailGeneration} />
       )}
       {emailState.status !== "idle" && outputMode === "proposal" && (
-        <ProposalResult state={emailState} onRegenerate={runEmailGeneration} />
+        <ProposalResult
+          state={emailState}
+          onRegenerate={runEmailGeneration}
+          targetCompany={businessInfo.targetCompany}
+        />
       )}
     </div>
   );
