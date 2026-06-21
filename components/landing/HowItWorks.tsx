@@ -23,43 +23,33 @@ const STEPS = [
 
 export default function HowItWorks() {
   return (
-    <section
-      id="how-it-works"
-      className="py-20 lg:py-28"
-    >
+    <section id="how-it-works" className="py-20 lg:py-28">
       <div className="mx-auto max-w-6xl px-6">
-        <AnimateIn className="mb-16 text-center">
+        <AnimateIn className="mb-12">
           <h2
-            className="mb-4 text-3xl font-bold tracking-tight lg:text-4xl"
+            className="text-3xl font-bold tracking-tight lg:text-4xl"
             style={{ color: "var(--color-text-primary)" }}
           >
             Three steps to a great first impression.
           </h2>
-          <p
-            className="mx-auto max-w-md text-base"
-            style={{ color: "var(--color-text-secondary)" }}
-          >
-            No prompting required. Just fill in the details and let the tool
-            do the writing.
-          </p>
         </AnimateIn>
 
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-3 lg:gap-14">
+        <div className="border-t border-stone-200">
           {STEPS.map((step, index) => (
-            <AnimateIn key={step.number} delay={index * 100}>
-              <div className="flex items-start gap-4 md:flex-col md:gap-4">
-                <div
-                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-sm font-bold"
-                  style={{
-                    backgroundColor: "rgba(13,148,136,0.1)",
-                    color: "var(--color-accent)",
-                  }}
+            <AnimateIn key={step.number} delay={index * 80}>
+              <div className="flex gap-5 border-b border-stone-200 py-9 transition-colors duration-200 hover:bg-white/70 sm:gap-8">
+                {/* Step number — plain mono text, no box */}
+                <span
+                  className="w-10 shrink-0 pt-0.5 font-mono text-lg font-bold tabular-nums"
+                  style={{ color: "var(--color-accent)" }}
                 >
                   {step.number}
-                </div>
-                <div>
+                </span>
+
+                {/* Title + description — stacked on mobile, side-by-side on md+ */}
+                <div className="flex flex-1 flex-col gap-2 md:flex-row md:gap-10 lg:gap-16">
                   <h3
-                    className="mb-2 text-base font-semibold"
+                    className="shrink-0 text-base font-semibold leading-snug md:w-52 lg:w-60"
                     style={{ color: "var(--color-text-primary)" }}
                   >
                     {step.title}
