@@ -156,17 +156,22 @@ export function ProposalResult({ state, onRegenerate, targetCompany }: Props) {
 
       <div className="p-5 flex flex-col gap-5">
         {isActive && (
-          <div className="flex items-center gap-2 py-6">
-            <span
-              className="inline-block w-0.5 h-4 animate-pulse"
-              style={{ backgroundColor: "var(--color-accent)" }}
-            />
-            <span
-              className="text-sm"
-              style={{ color: "var(--color-text-secondary)" }}
-            >
+          <div className="flex flex-col items-center justify-center gap-4 py-14">
+            <div className="flex items-center gap-1.5">
+              {[0, 1, 2].map((i) => (
+                <span
+                  key={i}
+                  className="inline-block h-2 w-2 rounded-full"
+                  style={{
+                    backgroundColor: "var(--color-accent)",
+                    animation: `pulseDot 1.4s ease-in-out ${i * 200}ms infinite`,
+                  }}
+                />
+              ))}
+            </div>
+            <span className="text-sm font-medium" style={{ color: "var(--color-text-secondary)" }}>
               {state.status === "retrying"
-                ? "Retrying..."
+                ? "High demand — switching providers..."
                 : "Writing your proposal..."}
             </span>
           </div>

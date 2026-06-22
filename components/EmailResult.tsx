@@ -67,8 +67,21 @@ export function EmailResult({ state, onRegenerate }: Props) {
             Generated email
           </span>
           {state.status === "retrying" && (
-            <span className="text-xs" style={{ color: "var(--color-accent)" }}>
-              High demand, retrying...
+            <span
+              className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium"
+              style={{
+                backgroundColor: "rgba(13,148,136,0.1)",
+                color: "var(--color-accent)",
+              }}
+            >
+              <span
+                className="inline-block h-1.5 w-1.5 rounded-full"
+                style={{
+                  backgroundColor: "var(--color-accent)",
+                  animation: "pulseDot 1.2s ease-in-out infinite",
+                }}
+              />
+              Switching providers...
             </span>
           )}
         </div>

@@ -8,10 +8,8 @@ import type {
   OutputMode,
   EmailStreamState,
 } from "@/lib/types";
-import { BusinessInfoFields } from "./BusinessInfoFields";
-import { OutputControls } from "./OutputControls";
-import { EmailResult } from "./EmailResult";
-import { ProposalResult } from "./ProposalResult";
+import { FormPanel } from "./FormPanel";
+import { OutputPanel } from "./OutputPanel";
 
 const EMPTY_BUSINESS_INFO: BusinessInfo = {
   service: "",
@@ -135,54 +133,34 @@ export function GeneratorForm() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-8" noValidate>
-        <BusinessInfoFields value={businessInfo} onChange={patchBusinessInfo} />
-
-        <div
-          className="h-px"
-          style={{ backgroundColor: "var(--color-border)" }}
-        />
-
-        <OutputControls
+    <div className="flex flex-col lg:flex-row lg:gap-6 h-full py-5 lg:py-6">
+      {/* Left column: form */}
+      <div className="lg:w-[400px] lg:shrink-0 lg:h-full">
+        <FormPanel
+          businessInfo={businessInfo}
           framework={framework}
           tone={tone}
           outputMode={outputMode}
+          isReady={isReady}
+          isGenerating={isGenerating}
+          onBusinessInfoChange={patchBusinessInfo}
           onFrameworkChange={setFramework}
           onToneChange={setTone}
           onOutputModeChange={handleOutputModeChange}
+          onSubmit={handleSubmit}
         />
+      </div>
 
-        <button
-          type="submit"
-          disabled={!isReady || isGenerating}
-          className="w-full rounded-lg py-3 px-4 text-sm font-semibold transition-colors"
-          style={{
-            backgroundColor:
-              isReady && !isGenerating
-                ? "var(--color-accent)"
-                : "var(--color-border)",
-            color:
-              isReady && !isGenerating
-                ? "var(--color-accent-foreground)"
-                : "var(--color-text-secondary)",
-            cursor: isReady && !isGenerating ? "pointer" : "not-allowed",
-          }}
-        >
-          {isGenerating ? "Generating..." : "Generate"}
-        </button>
-      </form>
-
-      {emailState.status !== "idle" && outputMode === "email" && (
-        <EmailResult state={emailState} onRegenerate={runEmailGeneration} />
-      )}
-      {emailState.status !== "idle" && outputMode === "proposal" && (
-        <ProposalResult
-          state={emailState}
-          onRegenerate={runEmailGeneration}
+      {/* Right column: output */}
+      <div className="flex-1 min-w-0 mt-5 lg:mt-0 lg:h-full">
+        <OutputPanel
+          emailState={emailState}
+          outputMode={outputMode}
           targetCompany={businessInfo.targetCompany}
+          isReady={isReady}
+          onRegenerate={runEmailGeneration}
         />
-      )}
+      </div>
     </div>
   );
 }
