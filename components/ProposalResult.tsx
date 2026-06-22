@@ -135,12 +135,22 @@ export function ProposalResult({ state, onRegenerate, targetCompany }: Props) {
         className="flex items-center justify-between px-5 py-3.5 border-b flex-wrap gap-3"
         style={{ borderColor: "var(--color-border)" }}
       >
-        <span
-          className="text-xs font-semibold uppercase tracking-wider"
-          style={{ color: "var(--color-text-secondary)" }}
-        >
-          Generated proposal
-        </span>
+        <div className="flex flex-col gap-0.5">
+          <span
+            className="text-xs font-semibold uppercase tracking-wider"
+            style={{ color: "var(--color-text-secondary)" }}
+          >
+            Generated proposal
+          </span>
+          {isDone && !parseError && (
+            <span
+              className="text-[11px]"
+              style={{ color: "var(--color-text-secondary)", opacity: 0.55 }}
+            >
+              Click any section to edit
+            </span>
+          )}
+        </div>
 
         <div className="flex items-center gap-2">
           {canCopy && generatedAt && (
