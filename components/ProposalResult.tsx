@@ -1,13 +1,11 @@
 "use client";
 
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { parseProposalResponse } from "@/lib/prompt-engine";
-import {
-  SECTION_KEYS,
-  SECTION_LABELS,
-  formatProposalAsText,
-} from "@/lib/proposal-formatter";
+import { formatProposalAsText } from "@/lib/proposal-formatter";
+import { ProposalDocument } from "./ProposalDocument";
+import { LoadingSkeleton } from "./LoadingSkeleton";
 import type { EmailStreamState, ProposalContent } from "@/lib/types";
 
 const DownloadProposalPdf = dynamic(
@@ -36,6 +34,7 @@ export function ProposalResult({ state, onRegenerate, targetCompany }: Props) {
   const [sections, setSections] = useState<ProposalContent>(EMPTY_SECTIONS);
   const [parseError, setParseError] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [generatedAt, setGeneratedAt] = useState<Date | null>(null);
 
   const isActive = state.status === "streaming" || state.status === "retrying";
   const isDone = state.status === "done";
@@ -45,6 +44,7 @@ export function ProposalResult({ state, onRegenerate, targetCompany }: Props) {
     if (state.status !== "streaming") return;
     setSections(EMPTY_SECTIONS);
     setParseError(false);
+    setGeneratedAt(null);
   }, [state.status]);
 
   useEffect(() => {
@@ -52,6 +52,7 @@ export function ProposalResult({ state, onRegenerate, targetCompany }: Props) {
     const parsed = parseProposalResponse(state.text);
     if (parsed) {
       setSections(parsed);
+      setGeneratedAt((prev) => prev ?? new Date());
     } else {
       setParseError(true);
     }
@@ -70,16 +71,50 @@ export function ProposalResult({ state, onRegenerate, targetCompany }: Props) {
   if (state.status === "error") {
     return (
       <div
-        className="rounded-xl border p-5 flex flex-col gap-3"
-        style={{ borderColor: "#fca5a5", backgroundColor: "#fef2f2" }}
+        className="rounded-xl border p-6 flex flex-col items-center gap-4 text-center"
+        style={{
+          borderColor: "var(--color-border)",
+          backgroundColor: "var(--color-surface)",
+        }}
       >
-        <p className="text-sm" style={{ color: "#991b1b" }}>
-          {state.error ?? "Something went wrong. Please try again."}
-        </p>
+        <div
+          className="flex h-10 w-10 items-center justify-center rounded-full"
+          style={{ backgroundColor: "rgba(220,38,38,0.08)" }}
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            className="h-5 w-5"
+            stroke="currentColor"
+            style={{ color: "#dc2626" }}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={1.5}
+              d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+            />
+          </svg>
+        </div>
+        <div className="flex flex-col gap-1">
+          <p
+            className="text-sm font-semibold"
+            style={{ color: "var(--color-text-primary)" }}
+          >
+            Unable to generate your proposal
+          </p>
+          <p className="text-xs" style={{ color: "var(--color-text-secondary)" }}>
+            Both AI providers are unavailable right now. Please try again in a
+            moment.
+          </p>
+        </div>
         <button
           onClick={onRegenerate}
-          className="self-start text-sm font-semibold underline underline-offset-2"
-          style={{ color: "#dc2626" }}
+          className="text-sm font-semibold px-4 py-2 rounded-lg"
+          style={{
+            backgroundColor: "rgba(13,148,136,0.08)",
+            color: "var(--color-accent)",
+          }}
         >
           Try again
         </button>
@@ -95,27 +130,25 @@ export function ProposalResult({ state, onRegenerate, targetCompany }: Props) {
         borderColor: "var(--color-border)",
       }}
     >
+      {/* Toolbar */}
       <div
         className="flex items-center justify-between px-5 py-3.5 border-b flex-wrap gap-3"
         style={{ borderColor: "var(--color-border)" }}
       >
-        <div className="flex flex-col gap-0.5">
-          <span
-            className="text-xs font-semibold uppercase tracking-wider"
-            style={{ color: "var(--color-text-secondary)" }}
-          >
-            Generated proposal
-          </span>
-          {state.status === "retrying" && (
-            <span className="text-xs" style={{ color: "var(--color-accent)" }}>
-              High demand, retrying...
-            </span>
-          )}
-        </div>
+        <span
+          className="text-xs font-semibold uppercase tracking-wider"
+          style={{ color: "var(--color-text-secondary)" }}
+        >
+          Generated proposal
+        </span>
 
         <div className="flex items-center gap-2">
-          {canCopy && (
-            <DownloadProposalPdf sections={sections} targetCompany={targetCompany} />
+          {canCopy && generatedAt && (
+            <DownloadProposalPdf
+              sections={sections}
+              targetCompany={targetCompany}
+              generatedAt={generatedAt}
+            />
           )}
 
           <button
@@ -154,73 +187,45 @@ export function ProposalResult({ state, onRegenerate, targetCompany }: Props) {
         </div>
       </div>
 
-      <div className="p-5 flex flex-col gap-5">
-        {isActive && (
-          <div className="flex flex-col items-center justify-center gap-4 py-14">
-            <div className="flex items-center gap-1.5">
-              {[0, 1, 2].map((i) => (
-                <span
-                  key={i}
-                  className="inline-block h-2 w-2 rounded-full"
-                  style={{
-                    backgroundColor: "var(--color-accent)",
-                    animation: `pulseDot 1.4s ease-in-out ${i * 200}ms infinite`,
-                  }}
-                />
-              ))}
-            </div>
-            <span className="text-sm font-medium" style={{ color: "var(--color-text-secondary)" }}>
-              {state.status === "retrying"
-                ? "High demand — switching providers..."
-                : "Writing your proposal..."}
-            </span>
-          </div>
-        )}
+      {isActive && (
+        <LoadingSkeleton
+          mode="proposal"
+          status={state.status === "retrying" ? "retrying" : "streaming"}
+        />
+      )}
 
-        {isDone && parseError && (
-          <div className="flex flex-col gap-2">
-            <p className="text-sm" style={{ color: "#991b1b" }}>
-              Could not parse the proposal. Please regenerate.
-            </p>
-            <pre
-              className="text-xs whitespace-pre-wrap p-3 rounded-lg overflow-x-auto"
-              style={{
-                backgroundColor: "var(--color-border)",
-                color: "var(--color-text-primary)",
-              }}
-            >
-              {state.text}
-            </pre>
-          </div>
-        )}
+      {isDone && parseError && (
+        <div className="p-5 flex flex-col items-center gap-3 text-center">
+          <p
+            className="text-sm font-semibold"
+            style={{ color: "var(--color-text-primary)" }}
+          >
+            Could not parse the proposal
+          </p>
+          <p className="text-xs" style={{ color: "var(--color-text-secondary)" }}>
+            The AI returned an unexpected format. Please try regenerating.
+          </p>
+          <button
+            onClick={onRegenerate}
+            className="text-sm font-semibold px-4 py-2 rounded-lg"
+            style={{
+              backgroundColor: "rgba(13,148,136,0.08)",
+              color: "var(--color-accent)",
+            }}
+          >
+            Regenerate
+          </button>
+        </div>
+      )}
 
-        {isDone &&
-          !parseError &&
-          SECTION_KEYS.map((key, i) => (
-            <Fragment key={key}>
-              {i > 0 && (
-                <div
-                  className="h-px"
-                  style={{ backgroundColor: "var(--color-border)" }}
-                />
-              )}
-              <div className="flex flex-col gap-1.5">
-                <label
-                  className="text-xs font-semibold uppercase tracking-wider"
-                  style={{ color: "var(--color-text-secondary)" }}
-                >
-                  {SECTION_LABELS[key]}
-                </label>
-                <textarea
-                  rows={3}
-                  className="form-input resize-y"
-                  value={sections[key]}
-                  onChange={(e) => patchSection(key, e.target.value)}
-                />
-              </div>
-            </Fragment>
-          ))}
-      </div>
+      {isDone && !parseError && (
+        <ProposalDocument
+          sections={sections}
+          targetCompany={targetCompany}
+          generatedAt={generatedAt ?? new Date()}
+          onPatchSection={patchSection}
+        />
+      )}
     </div>
   );
 }

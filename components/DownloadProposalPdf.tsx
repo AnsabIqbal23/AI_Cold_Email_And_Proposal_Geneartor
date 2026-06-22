@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { ProposalPdf } from "./ProposalPdf";
 import type { ProposalContent } from "@/lib/types";
@@ -16,10 +15,10 @@ function buildFilename(targetCompany: string): string {
 interface Props {
   sections: ProposalContent;
   targetCompany: string;
+  generatedAt: Date;
 }
 
-export function DownloadProposalPdf({ sections, targetCompany }: Props) {
-  const [generatedAt] = useState(() => new Date());
+export function DownloadProposalPdf({ sections, targetCompany, generatedAt }: Props) {
   const filename = buildFilename(targetCompany);
 
   return (
