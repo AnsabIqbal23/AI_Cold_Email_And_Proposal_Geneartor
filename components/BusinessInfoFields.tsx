@@ -1,4 +1,7 @@
+"use client";
+
 import type { BusinessInfo } from "@/lib/types";
+import { serviceAndPainPointSeemDisconnected } from "@/lib/input-quality";
 
 interface Props {
   value: BusinessInfo;
@@ -43,6 +46,11 @@ function SectionHeader({
 }
 
 export function BusinessInfoFields({ value, onChange }: Props) {
+  const showConnectionHint = serviceAndPainPointSeemDisconnected(
+    value.service,
+    value.painPoint
+  );
+
   return (
     <div className="flex flex-col gap-7">
       <section>
@@ -136,10 +144,24 @@ export function BusinessInfoFields({ value, onChange }: Props) {
               id="painPoint"
               rows={3}
               className="form-input resize-none"
-              placeholder="e.g. Their checkout flow loses 40% of users at the payment step"
+              placeholder="e.g. Their support team takes 3 to 5 days to respond to client tickets, causing churn"
               value={value.painPoint}
               onChange={(e) => onChange({ painPoint: e.target.value })}
             />
+            <p
+              className="mt-1.5 text-xs"
+              style={{ color: "var(--color-text-secondary)", opacity: 0.65 }}
+            >
+              Be specific, numbers and details produce better emails.
+            </p>
+            {showConnectionHint && (
+              <p
+                className="mt-2 text-xs"
+                style={{ color: "#b45309" }}
+              >
+                Heads up: your pain point doesn&apos;t seem to connect to your service. The email will be stronger if they&apos;re directly related, but you can still generate as-is.
+              </p>
+            )}
           </div>
 
           <div>
@@ -154,10 +176,16 @@ export function BusinessInfoFields({ value, onChange }: Props) {
               id="keyBenefit"
               type="text"
               className="form-input"
-              placeholder="e.g. Reduced cart abandonment by 30% for similar clients"
+              placeholder="e.g. Our AI agent resolves 80% of queries instantly, reducing response time from days to minutes"
               value={value.keyBenefit}
               onChange={(e) => onChange({ keyBenefit: e.target.value })}
             />
+            <p
+              className="mt-1.5 text-xs"
+              style={{ color: "var(--color-text-secondary)", opacity: 0.65 }}
+            >
+              Be specific, numbers and details produce better emails.
+            </p>
           </div>
 
           <div>
@@ -178,7 +206,7 @@ export function BusinessInfoFields({ value, onChange }: Props) {
               id="personalizationHook"
               rows={2}
               className="form-input resize-none"
-              placeholder="e.g. I saw your recent post about scaling the engineering team"
+              placeholder="e.g. Saw your CEO mention slow support as a top priority in a recent LinkedIn post"
               value={value.personalizationHook ?? ""}
               onChange={(e) =>
                 onChange({ personalizationHook: e.target.value })
